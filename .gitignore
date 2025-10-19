@@ -1,0 +1,42 @@
+# Git for DBAs - .gitignore
+
+# Connection strings and credentials
+*connection*.config
+*.env
+.env.*
+config.local.*
+
+# Database backup files
+*.bak
+*.trn
+*.mdf
+*.ldf
+
+# SQL Server temporary files
+*.tmp
+*.temp
+
+# Office temporary files
+~$*
+
+# Mac system files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows system files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Editor directories
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Personal notes (if you want to keep notes private)
+# NOTES.md
+# personal-notes/
+
