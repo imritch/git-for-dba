@@ -132,7 +132,14 @@ git status
 ## 📝 Exercise 2: Multiple Stashes
 
 ```bash
-# You can stash multiple times
+# First, create some files we can work with
+echo "-- Proc 1" > database/Proc1.sql
+echo "-- Proc 2" > database/Proc2.sql
+echo "-- Proc 3" > database/Proc3.sql
+git add database/Proc*.sql
+git commit -m "Add three procedures"
+
+# Now you can stash multiple times (modifying existing tracked files)
 echo "-- Change 1" >> database/Proc1.sql
 git stash save "Work on Proc1"
 
@@ -161,19 +168,38 @@ git stash clear
 
 ## 📝 Exercise 3: Stash with Untracked Files
 
+**Important:** By default, `git stash` only stashes changes to **tracked files** (files already in Git). It ignores **untracked files** (new files never added).
+
 ```bash
-# Create a new file (untracked)
+# Create a new file (untracked - not in Git yet)
 echo "-- New procedure" > database/NewProc.sql
 
-# Regular stash won't include untracked files
-git stash  # This won't stash NewProc.sql
+# Check status
+git status
+# Shows: Untracked files: database/NewProc.sql
 
-# Include untracked files
+# Regular stash WON'T include untracked files
+git stash
+git status  # NewProc.sql is still there!
+
+# Solution 1: Include untracked files with -u flag
+echo "-- Another new proc" > database/AnotherProc.sql
 git stash -u  # or --include-untracked
+git status    # Now it's clean!
 
-# Include everything, even ignored files
-git stash -a  # or --all
+# Solution 2: Add files first (makes them tracked)
+echo "-- Yet another proc" > database/YetAnotherProc.sql
+git add database/YetAnotherProc.sql
+git stash  # Now it works because file is tracked
+
+# Solution 3: Include everything, even .gitignore files
+git stash -a  # or --all (be careful with this!)
 ```
+
+**Summary:**
+- `git stash` → Only stashes tracked files
+- `git stash -u` → Stashes tracked + untracked files
+- `git stash -a` → Stashes everything including ignored files
 
 ## 🎓 Advanced: Stash Operations
 
@@ -191,14 +217,28 @@ git stash branch feature-error-handling stash@{0}
 
 ## ⚠️ Common Pitfalls
 
-1. **Forgetting what's stashed**: Always use descriptive messages
+1. **Stashing untracked files**: By default, `git stash` only saves changes to tracked files!
+   ```bash
+   # Wrong - new file won't be stashed
+   echo "-- New" > NewFile.sql
+   git stash  # NewFile.sql is NOT stashed!
+   
+   # Right - use -u flag for untracked files
+   git stash -u
+   
+   # Or add the file first to make it tracked
+   git add NewFile.sql
+   git stash
+   ```
+
+2. **Forgetting what's stashed**: Always use descriptive messages
    ```bash
    git stash save "Adding pagination to customer search - halfway done"
    ```
 
-2. **Stash conflicts**: If you apply a stash and there are conflicts, resolve them like merge conflicts
+3. **Stash conflicts**: If you apply a stash and there are conflicts, resolve them like merge conflicts
 
-3. **Stashing partial changes**: You can stash specific files
+4. **Stashing partial changes**: You can stash specific files
    ```bash
    git stash push -m "Only stash this file" database/SpecificProc.sql
    ```
@@ -250,10 +290,14 @@ Try this sequence:
 ## 🎓 Key Takeaways
 
 - `git stash` = temporary storage for uncommitted work
+- **By default, only stashes tracked files** (use `-u` for untracked files)
 - `git stash pop` = apply and remove stash
 - `git stash apply` = apply but keep stash
+- `git stash list` = see all your stashes
 - Always use descriptive messages with `git stash save "message"`
 - Stashes are local - they don't push to remote
+- `git stash -u` = include untracked (new) files
+- `git stash -a` = include all files, even ignored ones
 
 ## 📚 Next Lesson
 
