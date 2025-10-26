@@ -4,3 +4,7 @@ CREATE TABLE Customers (
     Email NVARCHAR(100),
     CreatedDate DATETIME DEFAULT GETDATE()
 );
+
+-- Index for email lookups
+CREATE NONCLUSTERED INDEX IX_Customers_Email
+ON Customers(Email);
