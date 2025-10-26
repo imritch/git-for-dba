@@ -1,11 +1,12 @@
 -- Get Customer Orders
-CREATE PROCEDURE dbo.GetCustomerOrders @CustomerId INT
+CREATE PROCEDURE dbo.GetCustomerOrders
+    @CustomerId INT
 AS
 BEGIN
-SELECT 
-	OrderId,
-	OrderDate,
-	TotalAmount
-FROM Orders
-WHERE CustomerId = @CustomerId;
+    SELECT 
+        OrderId,
+        OrderDate,
+        TotalAmount
+    FROM Orders
+    WHERE CustomerId = @CustomerId;
 END
