@@ -1,17 +1,13 @@
--- Update Customer Information - Resolve Merge Conflict
+-- Update Customer Information
 CREATE PROCEDURE dbo.UpdateCustomer
-	@CustomerId INT,
-	@CustomerName NVARCHAR(100),
-	@Email NVARCHAR(100), 
-	@Phone NVARCHAR(20),
-	@Address NVARCHAR(200)
+    @CustomerId INT,
+    @CustomerName NVARCHAR(100),
+    @Email NVARCHAR(100)
 AS
 BEGIN
-	UPDATE Customers
-	SET
-		CustomerName = @CustomerName,
-		Email = @Email, 
-		Phone = @Phone, 
-		Address = @Address
-	WHERE CustomerId = @CustomerId;
+    UPDATE Customers
+    SET 
+        CustomerName = @CustomerName,
+        Email = @Email
+    WHERE CustomerId = @CustomerId;
 END
