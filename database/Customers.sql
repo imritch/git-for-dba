@@ -8,3 +8,7 @@ CREATE TABLE Customers (
 -- Index for email lookups
 CREATE NONCLUSTERED INDEX IX_Customers_Email
 ON Customers(Email);
+
+-- Index for name searches
+CREATE NONCLUSTERED INDEX IX_Customers_Name
+ON Customers(CustomerName);
