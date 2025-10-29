@@ -104,21 +104,30 @@ git log --oneline --graph
 
 Follow the lessons in order:
 
-1. **[Lesson 1: Git Stash](lessons/01-git-stash.md)** - Start here!
-2. [Lesson 2: Merge Conflicts](lessons/02-merge-conflicts.md)
-3. [Lesson 3: Git Rebase](lessons/03-git-rebase.md)
-4. [Lesson 4: Interactive Rebase](lessons/04-interactive-rebase.md)
-5. [Lesson 5: Merge Strategies](lessons/05-merge-strategies.md)
-6. [Lesson 6: Cherry-Pick](lessons/06-cherry-pick.md)
-7. [Lesson 7: Reset vs Revert](lessons/07-reset-revert.md)
+#### Core Lessons (Essential for all DBAs)
+1. **[Lesson 1: Git Stash](lessons/01-git-stash.md)** - Start here! (Now with advanced techniques)
+2. [Lesson 2: Merge Conflicts](lessons/02-merge-conflicts.md) - Resolve conflicts + Visual merge tools
+3. [Lesson 3: Git Rebase](lessons/03-git-rebase.md) - Clean linear history
+4. [Lesson 4: Interactive Rebase](lessons/04-interactive-rebase.md) - Edit and clean commits
+5. [Lesson 5: Merge Strategies](lessons/05-merge-strategies.md) - FF, squash, no-ff
+6. [Lesson 6: Cherry-Pick](lessons/06-cherry-pick.md) - Selective commits
+7. [Lesson 7: Reset vs Revert](lessons/07-reset-revert.md) - Undo safely
 
 **Time estimate:** 30-45 minutes per lesson
+
+#### Advanced Lessons (Master Git)
+8. [Lesson 8: Git Bisect](lessons/08-git-bisect.md) - Debug with binary search
+9. [Lesson 9: Git Hooks](lessons/09-git-hooks.md) - Automate validation
+10. [Lesson 10: Advanced Recovery](lessons/10-advanced-recovery.md) - Rescue lost work
+
+**Time estimate:** 45-60 minutes per lesson
 
 ### Path 2: Scenario-Based Learning (For hands-on learners)
 
 Jump straight into realistic scenarios:
 
-- Open [Practice Scenarios](exercises/PRACTICE-SCENARIOS.md)
+- **Solo practice:** [Practice Scenarios](exercises/PRACTICE-SCENARIOS.md) - 8 individual scenarios
+- **Team practice:** [Team Collaboration](exercises/TEAM-COLLABORATION.md) - 6 multi-developer scenarios
 - Pick a scenario that interests you
 - Work through it
 - Refer back to lessons when you need more details
@@ -132,30 +141,48 @@ Use the quick reference as you work:
 - Look up commands as needed
 - Try the examples in the reference
 
+### Path 4: Topic-Specific Deep Dives
+
+Jump to specific topics you need right now:
+
+- **Struggling with merge conflicts?** → [Merge Tools Guide](docs/MERGE-TOOLS.md)
+- **Need to work on multiple branches?** → [Git Worktrees](docs/GIT-WORKTREES.md)
+- **Working in a team?** → [Team Collaboration](exercises/TEAM-COLLABORATION.md)
+- **Need to find a bug?** → [Lesson 8: Git Bisect](lessons/08-git-bisect.md)
+- **Want to automate validation?** → [Lesson 9: Git Hooks](lessons/09-git-hooks.md)
+- **Lost some work?** → [Lesson 10: Advanced Recovery](lessons/10-advanced-recovery.md)
+
 ## 📖 Recommended Learning Order
 
 If you're not sure where to start, follow this order:
 
-### Week 1: Fundamentals
+### Week 1: Core Git Skills
 - **Day 1:** Review basics (add, commit, push) + Lesson 1 (Stash)
-- **Day 2:** Lesson 2 (Merge Conflicts)
+- **Day 2:** Lesson 2 (Merge Conflicts) + Setup [Merge Tools](docs/MERGE-TOOLS.md)
 - **Day 3:** Practice Scenarios 1-2
 - **Day 4:** Lesson 3 (Rebase)
 - **Day 5:** Practice and review
 
-### Week 2: Advanced Topics
+### Week 2: Advanced Core Skills
 - **Day 1:** Lesson 4 (Interactive Rebase)
 - **Day 2:** Practice Scenarios 3-4
 - **Day 3:** Lesson 5 (Merge Strategies)
 - **Day 4:** Lesson 6 (Cherry-Pick)
 - **Day 5:** Practice Scenarios 5-6
 
-### Week 3: Mastery
+### Week 3: Mastery & Power Tools
 - **Day 1:** Lesson 7 (Reset vs Revert)
-- **Day 2:** Practice Scenarios 7-8
-- **Day 3:** Challenge Scenario (Complete Database Migration)
-- **Day 4:** Apply to your real work
-- **Day 5:** Review and solidify
+- **Day 2:** Lesson 8 (Git Bisect) - Find bugs fast
+- **Day 3:** Lesson 9 (Git Hooks) - Automate workflows
+- **Day 4:** Lesson 10 (Advanced Recovery) - Rescue techniques
+- **Day 5:** Practice Scenarios 7-8
+
+### Week 4: Team Skills & Modern Tools
+- **Day 1:** [Git Worktrees](docs/GIT-WORKTREES.md) - Multiple branches
+- **Day 2:** [Team Collaboration](exercises/TEAM-COLLABORATION.md) - Scenarios 1-3
+- **Day 3:** [Team Collaboration](exercises/TEAM-COLLABORATION.md) - Scenarios 4-6
+- **Day 4:** Challenge Scenario (Complete Database Migration)
+- **Day 5:** Apply to your real work & review
 
 ## 🎯 Quick Practice Ideas (5-10 minutes each)
 
@@ -268,11 +295,22 @@ git diff main...feature-branch  # Changes that would merge
 ## 📚 Helpful Resources
 
 ### In This Repository
+
+#### Core Materials
 - **[README.md](README.md)** - Overview
 - **[QUICK-REFERENCE.md](QUICK-REFERENCE.md)** - Command cheat sheet
-- **[lessons/](lessons/)** - Step-by-step lessons
-- **[exercises/PRACTICE-SCENARIOS.md](exercises/PRACTICE-SCENARIOS.md)** - Realistic scenarios
+- **[lessons/](lessons/)** - 10 step-by-step lessons
+
+#### Practice & Scenarios
+- **[exercises/PRACTICE-SCENARIOS.md](exercises/PRACTICE-SCENARIOS.md)** - 8 solo scenarios
+- **[exercises/TEAM-COLLABORATION.md](exercises/TEAM-COLLABORATION.md)** - 6 team scenarios
 - **[database/sample-schema.sql](database/sample-schema.sql)** - Sample SQL to practice with
+
+#### Advanced Guides
+- **[docs/MERGE-TOOLS.md](docs/MERGE-TOOLS.md)** - Visual merge tool setup
+- **[docs/GIT-WORKTREES.md](docs/GIT-WORKTREES.md)** - Multiple branch workspaces
+- **[GIT-WORKFLOW.md](GIT-WORKFLOW.md)** - Team workflows & decision trees
+- **[TROUBLESHOOTING.md](TROUBLESHOOTING.md)** - Common issues & solutions
 
 ### External Resources
 - [Official Git Documentation](https://git-scm.com/doc)
@@ -348,8 +386,38 @@ Before diving into the lessons, make sure:
 - [ ] You've made your first commit
 - [ ] You can view logs (`git log` shows commits)
 - [ ] You understand basic commands (add, commit, status)
+- [ ] (Optional) Git aliases installed (`./scripts/git-aliases.sh`)
+- [ ] (Optional) Merge tool configured ([Merge Tools Guide](docs/MERGE-TOOLS.md))
 
 If all checked, **you're ready to start [Lesson 1](lessons/01-git-stash.md)!**
+
+## 🎯 What Will You Master?
+
+By completing this training, you'll be able to:
+
+### After Core Lessons (1-7)
+- ✅ Handle any merge conflict confidently
+- ✅ Rebase and clean up commit history
+- ✅ Use stash effectively for context switching
+- ✅ Choose the right merge strategy
+- ✅ Undo mistakes safely (reset vs revert)
+- ✅ Cherry-pick commits across branches
+
+### After Advanced Lessons (8-10)
+- ✅ Debug issues by finding the problematic commit (bisect)
+- ✅ Automate validation with pre-commit hooks
+- ✅ Recover "lost" commits from disasters
+- ✅ Remove sensitive data from Git history
+- ✅ Use reflog to time-travel through Git history
+
+### After Supplementary Materials
+- ✅ Resolve conflicts with visual merge tools
+- ✅ Work on multiple branches simultaneously (worktrees)
+- ✅ Collaborate effectively in multi-developer teams
+- ✅ Handle emergency hotfixes without losing flow
+- ✅ Conduct code reviews without context switching
+
+**You'll go from Git novice to Git power user!**
 
 ## 🎊 Final Encouragement
 
