@@ -1,0 +1,4 @@
+CREATE TABLE MainTable (
+    Id INT PRIMARY KEY,
+    Data NVARCHAR(100)
+);
