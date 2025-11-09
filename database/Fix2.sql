@@ -1,0 +1,2 @@
+-- Bug fix 2
+ALTER TABLE MainTable ADD UpdatedDate DATETIME DEFAULT GETDATE();
