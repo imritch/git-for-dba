@@ -22,6 +22,64 @@ Rebase moves or replays your commits onto a different base commit, creating a li
               D'---E'  feature (commits replayed)
 ```
 
+### More Context
+Core Difference
+
+  Git Merge:
+  - Creates a new "merge commit" that combines two branches
+  - Preserves the complete history of both branches
+  - Shows that parallel development happened
+  - Non-destructive - doesn't change existing commits
+
+  Git Rebase:
+  - Moves/rewrites your commits on top of another branch
+  - Creates a linear history (no merge commits)
+  - Rewrites commit history with new commit hashes
+  - Makes it look like development happened sequentially
+
+  Visual Example
+
+  Starting point:
+  main:     A---B---C
+                 \
+  feature:        D---E
+
+  After git merge:
+  main:     A---B---C-------M
+                 \         /
+  feature:        D---E---
+  (M is a new merge commit)
+
+  After git rebase:
+  main:     A---B---C---D'---E'
+  (D' and E' are new commits with different hashes)
+
+  What They're Implying When They Say "Merge, Not Rebase"
+
+  When someone specifically asks for a merge, they likely want:
+
+  1. Preserve true history - Show that work actually happened in parallel
+  2. Traceability - The merge commit acts as a milestone showing when feature work
+  was integrated
+  3. Safety - Avoid rewriting shared history (rebasing rewrites commits)
+  4. Team visibility - Merge commits show collaboration points
+  5. Code review integration - Many PR/code review workflows expect merge commits
+
+  When to Use Each
+
+  Use Merge when:
+  - Working on shared/public branches
+  - You want to preserve the context of feature development
+  - Team policy requires it (common in enterprise environments)
+  - Working with pull requests that others may have based work on
+
+  Use Rebase when:
+  - Cleaning up local feature branches before sharing
+  - You want a clean, linear history
+  - Catching up your feature branch with main before creating a PR
+  - Your commits are still private/local
+
+
 **Key Difference:** Rebase rewrites history to make it linear. Merge preserves the branching history.
 
 ## 📝 Exercise 1: Basic Rebase
