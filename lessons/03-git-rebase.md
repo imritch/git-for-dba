@@ -378,44 +378,295 @@ git rebase -i --autosquash HEAD~2
 
 ## 🎓 Advanced Rebase Techniques
 
-### Technique 1: Rebase onto specific commit
+### Technique 1: Rebase onto a Specific Commit
 
-```bash
-# Rebase onto a specific commit instead of a branch
-git rebase <commit-hash>
+Sometimes you want to rebase onto a specific commit rather than the tip of a branch. This is useful when you want to base your work on a particular point in history.
+
+**Use Case:** You're working on a feature, but you realize you should base your work on an earlier commit that has a stable schema, not the latest main branch which has experimental changes.
+
+**Visual:**
+```
+Before:
+    A---B---C---D---E  main (E has experimental changes)
+         \
+          F---G  feature
+
+After rebasing onto C:
+    A---B---C  (stable commit)
+         \   \
+          \   F'---G'  feature (rebased onto C)
+           \
+            D---E  main
 ```
 
-### Technique 2: Preserve merge commits
-
+**Example:**
 ```bash
-# If you have merge commits you want to keep
-git rebase -p main  # or --preserve-merges (deprecated)
-git rebase -r main  # --rebase-merges (newer approach)
+# View commit history to find the commit hash
+git log --oneline main
+# Output:
+# e5f6g7h (HEAD -> main) Add experimental feature
+# d4e5f6g Update schema with nullable columns
+# c3d4e5f Add stable indexes (STABLE - we want this)
+# b2c3d4e Add Customers table
+# a1b2c3d Initial commit
+
+# Rebase your feature branch onto the stable commit (c3d4e5f)
+git checkout feature/add-reports
+git rebase c3d4e5f
+
+# Now your feature commits are replayed on top of the stable commit
+# Your feature branch is isolated from the experimental changes in D and E
 ```
 
-### Technique 3: Rebase with exec
-
+**Real DBA Scenario:**
 ```bash
-# Run a command after each commit
-git rebase -i HEAD~5 --exec "npm test"
+# You're developing a new report, but main branch has unstable schema changes
+# Find the last stable commit
+git log --oneline --all --graph
 
-# Or in interactive mode, add:
-pick <hash> Commit 1
-exec npm test
-pick <hash> Commit 2
-exec npm test
+# Rebase onto that specific commit
+git checkout feature/monthly-reports
+git rebase abc1234  # The hash of the stable commit
+
+# Later, when main is stable, rebase onto main
+git rebase main
 ```
 
-For DBAs:
-```bash
-git rebase -i HEAD~3 --exec "sqlcmd -S localhost -i database/*.sql"
+**Why use this?**
+- Avoid unstable or experimental code in main
+- Base work on a known-good commit
+- Test your changes against a specific version
+- Useful when main is temporarily broken
+
+---
+
+### Technique 2: Preserve Merge Commits (Rebase-Merges)
+
+By default, `git rebase` flattens merge commits into linear history. But sometimes you want to preserve the merge structure to maintain the branching context.
+
+**The Problem:**
 ```
+Before:
+    A---B---C  main
+         \   \
+          D---E---M  feature (M is a merge commit merging hotfix)
+               \  /
+                F  hotfix
+
+After normal rebase (merge commits are lost):
+    A---B---C  main
+             \
+              D'---E'---F'  feature (linear - merge history lost!)
+```
+
+**The Solution: `--rebase-merges` (or `-r`)**
+```
+After git rebase -r main:
+    A---B---C  main
+             \   \
+              D'---E'---M'  feature (merge structure preserved!)
+                   \  /
+                    F'  hotfix
+```
+
+**Example:**
+```bash
+# Scenario: You have a feature branch with a merge commit
+git checkout feature/schema-updates
+
+# View current history
+git log --oneline --graph
+# * m5n6o7p (HEAD -> feature/schema-updates) Merge hotfix into feature
+# |\
+# | * k4l5m6n Apply critical index fix
+# * | i2j3k4l Add new columns
+# * | g0h1i2j Add new table
+# |/
+# * e5f6g7h Base commit
+
+# Rebase onto main while preserving merge commits
+git rebase --rebase-merges main
+# or shorthand:
+git rebase -r main
+
+# The merge commit structure is preserved after rebase
+```
+
+**DBA Scenario:**
+```bash
+# You have a feature branch where you merged a hotfix mid-development
+# The merge commit shows that a critical index fix was integrated
+
+# Before rebase (with merge history):
+* a1b2c3d Add reporting stored procedure
+*   m5n6o7p Merge hotfix/index-fix into feature/reports
+|\
+| * h8i9j0k Fix missing index on Orders table (CRITICAL)
+* | d4e5f6g Add initial report queries
+|/
+* c3d4e5f Base schema
+
+# Preserve this merge history when rebasing onto main
+git checkout feature/reports
+git rebase --rebase-merges main
+
+# After rebase - merge structure preserved, shows hotfix was integrated
+```
+
+**When to use `--rebase-merges`:**
+- You have meaningful merge commits (e.g., integrating a hotfix)
+- You want to preserve the context of when branches were integrated
+- Team policy requires showing merge points
+- You're rebasing complex branch structures
+
+**Note:** The older `-p` or `--preserve-merges` flag is deprecated. Always use `-r` or `--rebase-merges`.
+
+---
+
+### Technique 3: Rebase with Exec (Auto-Testing)
+
+The `--exec` option runs a command after each commit during rebase. This is powerful for validating that every commit in your history is buildable/testable.
+
+**Use Case:** You want to ensure that EVERY commit in your feature branch passes tests or can be deployed successfully, not just the final commit.
+
+**Why this matters:**
+- Ensures each commit is individually valid
+- Makes bisecting easier (every commit works)
+- Catches issues introduced mid-development
+- Professional practice for production code
+
+**Basic Syntax:**
+```bash
+git rebase -i HEAD~5 --exec "command-to-run"
+```
+
+**Example 1: Run tests after each commit**
+```bash
+# Ensure every commit passes tests
+git rebase -i HEAD~3 --exec "npm test"
+
+# What happens:
+# 1. Git applies commit 1
+# 2. Runs "npm test"
+# 3. If test passes, continues to commit 2
+# 4. If test fails, rebase stops - you fix the issue
+```
+
+**Example 2: DBA Scenario - Validate SQL Scripts**
+```bash
+# You've made 4 commits modifying stored procedures
+# Ensure each commit's SQL is valid syntax
+
+git checkout feature/update-procedures
+git rebase -i HEAD~4 --exec "sqlcmd -S localhost -d TestDB -i database/*.sql"
+
+# What happens:
+# After each commit is applied, SQL scripts are executed
+# If any script has syntax errors, rebase stops
+# You fix the issue at that specific commit
+# Continue with: git rebase --continue
+```
+
+**Example 3: Check for specific patterns (security check)**
+```bash
+# Ensure no commit contains hardcoded credentials
+git rebase -i HEAD~5 --exec "grep -r 'password' database/ && exit 1 || exit 0"
+
+# Stops if 'password' string is found in any commit
+```
+
+**Example 4: Using exec in interactive rebase editor**
+
+When you run `git rebase -i HEAD~3`, you can manually add `exec` lines:
+
+```bash
+git rebase -i HEAD~3
+```
+
+**Editor opens:**
+```
+pick a1b2c3d Add Customers table
+exec sqlcmd -S localhost -i database/Customers.sql
+pick b2c3d4e Add Orders table
+exec sqlcmd -S localhost -i database/Orders.sql
+pick c3d4e5f Add indexes
+exec sqlcmd -S localhost -i database/*.sql
+
+# Rebase will:
+# 1. Apply "Add Customers table"
+# 2. Run sqlcmd to validate Customers.sql
+# 3. Apply "Add Orders table"
+# 4. Run sqlcmd to validate Orders.sql
+# 5. Apply "Add indexes"
+# 6. Run sqlcmd to validate all SQL files
+```
+
+**Real-World DBA Scenario:**
+```bash
+# You've made multiple commits updating database schema
+# You want to ensure each commit can be applied to a fresh database
+
+# Create test script
+cat > test-sql.sh << 'EOF'
+#!/bin/bash
+# Reset test database
+sqlcmd -S localhost -Q "DROP DATABASE IF EXISTS TestRebaseDB; CREATE DATABASE TestRebaseDB;"
+
+# Apply all SQL files in order
+for file in database/*.sql; do
+    echo "Testing $file..."
+    sqlcmd -S localhost -d TestRebaseDB -i "$file"
+    if [ $? -ne 0 ]; then
+        echo "ERROR: $file failed!"
+        exit 1
+    fi
+done
+echo "All SQL files validated successfully!"
+EOF
+
+chmod +x test-sql.sh
+
+# Rebase with validation after each commit
+git rebase -i HEAD~5 --exec "./test-sql.sh"
+
+# Now you know every single commit has valid, deployable SQL
+```
+
+**Practical Example - Building a clean history:**
+```bash
+# You have 3 commits:
+# 1. Add table
+# 2. Add procedure (has a bug)
+# 3. Fix procedure
+
+# Run tests on each commit
+git rebase -i HEAD~3 --exec "npm test"
+
+# Rebase stops at commit 2 (procedure has bug)
+# You can:
+# - Fix the bug in commit 2 itself: git commit --amend
+# - Or skip and let commit 3 fix it: git rebase --continue
+
+# Best practice: Fix it in commit 2 to maintain clean history
+```
+
+**Benefits of --exec:**
+✅ Every commit is validated
+✅ Easier debugging with `git bisect` (every commit works)
+✅ Cleaner history (no broken commits)
+✅ Catches issues early in the commit sequence
+✅ Professional-grade commit hygiene
+
+---
 
 ### Technique 4: Skip commits during rebase
 
 ```bash
-# If a commit is causing issues
+# If a commit is causing issues during rebase and you want to exclude it
 git rebase --skip
+
+# Use case: A commit conflicts or is no longer needed
+# Skip it and continue with remaining commits
 ```
 
 ## ⚠️ The Golden Rule of Rebase
