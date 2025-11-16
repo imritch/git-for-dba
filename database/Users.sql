@@ -3,3 +3,6 @@ CREATE TABLE Users (
     Username NVARCHAR(50) NOT NULL,
     Email NVARCHAR(100)
 );
+
+CREATE UNIQUE NONCLUSTERED INDEX UX_Users_Email
+ON Users(Email) WHERE Email IS NOT NULL;
