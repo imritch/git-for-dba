@@ -1,0 +1,9 @@
+CREATE TABLE Orders (
+    OrderId INT PRIMARY KEY IDENTITY(1,1),
+    UserId INT NOT NULL,
+    OrderDate DATETIME DEFAULT GETDATE(),
+    TotalAmount DECIMAL(10,2) NOT NULL
+);
+
+CREATE NONCLUSTERED INDEX IX_Orders_UserId
+ON Orders(UserId);
