@@ -1,4 +1,4 @@
 CREATE TABLE Categories (
     CategoryId INT PRIMARY KEY,
-    CategoryName NVARCHAR(100)
+    CategoryName  NVARCHAR(100)
 );
