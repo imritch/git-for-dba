@@ -254,6 +254,8 @@ git stash pop
 | Safety | Safe for public branches | Dangerous on public branches |
 | Use When | Multiple collaborators | Clean history desired |
 
+**📖 Need detailed guidance?** See the [Merge vs Rebase Decision Guide](./exercises/MERGE-VS-REBASE-DECISION.md) for real-world PR scenarios.
+
 ### Reset vs Revert
 | Aspect | Reset | Revert |
 |--------|-------|--------|

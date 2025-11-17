@@ -2,6 +2,8 @@
 
 These are realistic scenarios you can practice to solidify your Git skills. Each scenario builds on the concepts from the lessons.
 
+**📖 New Addition:** Looking for guidance on when to merge vs rebase, especially for PR scenarios? Check out the [Merge vs Rebase Decision Guide](./MERGE-VS-REBASE-DECISION.md) for a comprehensive real-world walkthrough.
+
 ## 🎯 Scenario 1: The Friday Afternoon Disaster
 
 **Situation:** It's Friday at 4:45 PM. You've been working on a complex stored procedure all afternoon with 12 commits. Code review is Monday morning. Your commit history looks like:

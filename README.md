@@ -47,6 +47,7 @@ The lessons are designed to be followed in order, but you can jump to specific t
 ### Additional Resources
 - [Merge Tools Guide](./docs/MERGE-TOOLS.md) - Visual merge tool setup (VS Code, Beyond Compare, etc.)
 - [Git Worktrees](./docs/GIT-WORKTREES.md) - Work on multiple branches simultaneously
+- [Merge vs Rebase Decision Guide](./exercises/MERGE-VS-REBASE-DECISION.md) - When to merge vs rebase (PR scenarios)
 - [Team Collaboration Scenarios](./exercises/TEAM-COLLABORATION.md) - Multi-developer workflows
 
 ## 💡 Tips for Learning

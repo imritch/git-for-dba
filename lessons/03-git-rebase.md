@@ -790,3 +790,14 @@ git rebase -i --autosquash main
 
 Want more power over your history? Move to [Lesson 4: Interactive Rebase Advanced](./04-interactive-rebase.md)
 
+---
+
+## 🎯 Real-World Decision Making
+
+**Need help deciding between merge and rebase in a real project?** Check out the [Merge vs Rebase Decision Guide](../exercises/MERGE-VS-REBASE-DECISION.md) which covers:
+- When to merge vs when to rebase
+- Handling long-running PRs with code reviews
+- Step-by-step walkthrough for merging main into your feature branch
+- Detailed conflict resolution strategies
+- Real-world scenario: 3-week PR with team collaboration
+

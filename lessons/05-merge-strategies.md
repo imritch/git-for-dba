@@ -502,3 +502,15 @@ git merge --abort
 
 Want to selectively pick commits? Move to [Lesson 6: Cherry-Pick](./06-cherry-pick.md)
 
+---
+
+## 🎯 Merge vs Rebase: Making the Right Choice
+
+**Working on a long-running PR and unsure whether to merge or rebase?** Check out the comprehensive [Merge vs Rebase Decision Guide](../exercises/MERGE-VS-REBASE-DECISION.md) which provides:
+- Real-world scenario: 3-week PR with code reviews
+- Detailed comparison of merge vs rebase
+- When to use each strategy
+- Step-by-step instructions for merging main into your feature branch
+- Conflict resolution techniques
+- Decision tree for choosing the right approach
+
